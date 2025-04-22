@@ -1,0 +1,22 @@
+<!-- templates/responder.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmar Identidade</title>
+</head>
+<body>
+  <h2>Pergunta Secreta para {{ usuario }}</h2>
+  <p><strong>{{ pergunta }}</strong></p>
+  <form action="{{ url_for('verificar_resposta') }}" method="POST">
+    <!-- Campo oculto com o nome do usuário -->
+    <input type="hidden" name="usuario" value="{{ usuario }}">
+    <label for="answer">Resposta:</label>
+    <input type="text" name="answer" required>
+    <label for="nova_senha">Nova Senha:</label>
+    <input type="password" id="nova_senha" name="nova_senha" required autocomplete="off">
+    <button type="submit">Alterar Senha</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!--templates/formulario.html-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Digite seu nome</h1>
+  <form method="POST">
+    <input type="text" name="nome" placeholder="seu nome princeso">
+    <input type="submit" value="Enviar">
+  </form><br><br>
+  <a href="{{ url_for('home') }}">
+    <button type="button">Voltar pro Home</button>
+</a>
+</body>
+
+</html>

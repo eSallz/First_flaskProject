@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Salve, mundo!</h1>
+    <p>Bem-vindo ao seu primeiro projeto Flask estruturado.</p>
+    <a href="/formulario">
+      <button type="button">Ir para o formulário -></button></a>
+    <br><br>
+    <form action="{{ url_for('login') }}" method="POST">
+        <button type="button">Login</button>
+    </a>
+</body>
+</html>

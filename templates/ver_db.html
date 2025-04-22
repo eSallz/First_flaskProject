@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizar DB</title>
+</head>
+<body>
+    {% for tabela, registros in dados.items() %}
+        <h2>Tabela: {{ tabela }}</h2>
+        <table border="1">
+            {% for registro in registros %}
+                <tr>
+                    {% for campo in registro %}
+                        <td>{{ campo }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+</body>
+</html>

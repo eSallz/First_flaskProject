@@ -1,0 +1,27 @@
+<!--templates/cadastro.html-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Novo Usuário</title>
+</head>
+<body>
+  <h2>Novo Usuário</h2>
+  <form action="{{ url_for('salvar_usuario') }}" method="POST">
+    <label for="nome">Nome de Usuário:</label>
+    <input type="text" name="nome" placeholder="Usuário" required>
+    <label for="senha">Senha:</label>
+    <input type="password" name="senha" required>
+    <label>Pergunta Secreta:</label>
+    <input type="text" name="pergunta" required>
+    <label>Resposta da Pergunta:</label>
+    <input type="text" name="resposta" required>
+    <br><br>
+    <button type="submit">Registrar</button>
+  </form><br><br><br>
+  <a href="{{ url_for('home') }}">
+    <button type="button">Voltar</button>
+  </a>
+</body>
+</html>

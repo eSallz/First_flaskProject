@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Bem-vindo ao painel, {{ usuario }}</h1>
+  <h3>nivel: {{ nivel }}</h3>
+  <br><br>
+  <form action="{{ url_for('logout') }}">
+    <button type="submit">Sair</button>
+  </form>
+  <a href="{{ url_for('perfil') }}">
+    <button type="button">Perfil</button>
+  </a>
+</body>
+</html>

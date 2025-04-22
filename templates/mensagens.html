@@ -1,0 +1,21 @@
+<!--templates/mensagens.html-->
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset=UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>{{ titulo }}</title>
+</head>
+<body>
+  <h2>
+    {{ titulo }}
+  </h2>
+  <p>
+    {{ mensagem }}
+  </p>
+  <a href="{{ url }}">
+    <button type="button">{{ texto_botao }}</button>
+  </a>
+</body>
+</html>

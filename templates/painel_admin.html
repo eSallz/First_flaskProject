@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Admin</title>
+</head>
+<body>
+    <h2>Painel Administrativo</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Nível</th>
+            <th>Ações</th>
+        </tr>
+        {% for id, nome, nivel in usuarios %}
+        <tr>
+            <td>{{ id }}</td>
+            <td>{{ nome }}</td>
+            <td>{{ nivel }}</td>
+            <td>
+                <form action="{{ url_for('excluir_usuario') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <button type="submit">Excluir</button>
+                </form>
+                <form action="{{ url_for('alterar_nivel') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <select name="nivel">
+                        {% for key in ['comum', 'moderador', 'admin', 'master'] %}
+                        <option value="{{ key }}" {% if key == nivel %}selected{% endif %}>{{ key }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Alterar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br>
+    <h3>Últimos acessos</h3>
+    <table border="1">
+    <tr>
+        <th>Usuário</th>
+        <th>Data e Hora</th>
+    </tr>
+    {% for usuario, data in logs %}
+    <tr>
+        <td>{{ usuario }}</td>
+        <td>{{ data }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <br><br>
+    <h3>Tentativas de Login</h3>
+    <table border="1">
+    <tr>
+        <th>Usuário Tentado</th>
+        <th>Data e Hora</th>
+        <th>IP</th>
+        <th>Sucesso</th>
+    </tr>
+    {% for usuario, data, ip, sucesso in tentativas %}
+    <tr>
+        <td>{{ usuario }}</td>
+        <td>{{ data }}</td>
+        <td>{{ ip }}</td>
+        <td>{{ 'Sim' if sucesso else 'Não' }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <br><br>
+    <a href="{{ url_for('painel') }}">
+        <button type="button">Painel Principal</button></a>
+</body>
+</html>

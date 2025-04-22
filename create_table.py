@@ -1,0 +1,20 @@
+import sqlite3
+
+conn = sqlite3.connect('usuarios.db')
+cursor = conn.cursor()
+
+cursor.execute('''
+CREATE TABLE usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL UNIQUE,
+    senha TEXT NOT NULL,
+    pergunta TEXT NOT NULL,
+    resposta TEXT NOT NULL,
+    nivel INTEGER DEFAULT comum
+)
+''')
+
+conn.commit()
+conn.close()
+
+print("Tabela criada! colunas: id; nome; senha; pergunta; resposta; nivel")

@@ -31,7 +31,10 @@ PWD = "admin123"
 
 @app.route('/')
 def home():
-    return render_template('login.html')
+    if 'usuario' in session:
+    	return redirect(url_for('start'))
+    else:
+    	return redirect(url_for('login_show'))
 
 @app.route('/home')
 def start():
@@ -54,6 +57,18 @@ def registrar_tentativa(usuario_tentado, sucesso):
         INSERT INTO tentativas_login (usuario_tentado, data_hora, ip, sucesso)
         VALUES (?, ?, ?, ?)
     ''', (usuario_tentado, agora, ip, int(sucesso)))
+    conn.commit()
+    conn.close()
+    
+def registrar_recuperacao(usuario, sucesso):
+    ip = request.remote_addr
+    agora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO recuperacoes_senha (usuario, data_hora, ip, sucesso)
+        VALUES (?, ?, ?, ?)
+    ''', (usuario, agora, ip, int(sucesso)))
     conn.commit()
     conn.close()
     
@@ -81,6 +96,13 @@ def login():
             url=url_for('home'),
             texto_botao='Início')
 
+@app.route('/to_login')
+def login_show():
+	if 'usuario' in session:
+		return redirect(url_for('start'))
+	else:
+		return render_template('login.html')
+		
 @app.route('/painel')
 @require_level(0)
 def painel():
@@ -193,49 +215,6 @@ def editar_perfil():
 	return render_template('mensagens.html', titulo='Erro ao Salvar', mensagem='Erro ao atualizar perfil', url=url_for('painel'),
 	texto_botao='Voltar')
 
-@app.route('/recuperar', methods=['GET', 'POST'])
-def recuperar():
-    if request.method == 'POST':
-        nome = request.form['usuario']
-        conn = sqlite3.connect('usuarios.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT pergunta FROM usuarios WHERE nome = ?", (nome,))
-        user = cursor.fetchone()
-        conn.close()
-
-        if user:
-            return render_template('responder.html', usuario=nome, pergunta=user[0])
-        else:
-            return render_template('mensagens.html',
-                titulo="Erro",
-                mensagem="Usuário não encontrado.",
-                url=url_for('recuperar'),
-                texto_botao="Tentar novamente")
-    return render_template('recuperar.html')
-    
-@app.route('/verificar_resposta', methods=['POST'])
-def verificar_resposta():
-	nome = request.form['usuario']
-	resposta = request.form['answer']
-	nova_senha = request.form['nova_senha']
-	conn = sqlite3.connect('usuarios.db')
-	cursor = conn.cursor()
-	cursor.execute("SELECT resposta FROM usuarios WHERE nome = ?", (nome,))
-	user =cursor.fetchone()
-	if user and check_password_hash(user[0], resposta):
-		nova_hash = generate_password_hash(nova_senha)
-		cursor.execute("UPDATE usuarios SET senha = ? WHERE nome = ?", (nova_hash, nome))
-		conn.commit()
-		msg = "Senha atualizada"
-	else:
-		msg = "Resposta incorreta"
-	conn.close()
-	return render_template('mensagens.html',
-	titulo='Status',
-	mensagem=mensagem,
-	url=url_for('home'),
-	texto_botao='Voltar')
-
 
 @app.route('/formulario', methods=['GET', 'POST'])
 def formulario():
@@ -298,10 +277,26 @@ def ver_db():
     
     conn.close()
     return render_template('ver_db.html', dados=dados)
+    
+def criar_tabela_recuperacoes():
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS recuperacoes_senha (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario TEXT,
+            data_hora TEXT,
+            ip TEXT,
+            sucesso INTEGER
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
 # Chama essa função no início do app.py
 criar_tabela_logs()
 criar_tabela_tentativas()
+criar_tabela_recuperacoes()
         
 if __name__ == '__main__':
     app.run(debug=True)

@@ -26,10 +26,8 @@ def require_level(nivel_requerido):
 app = Flask(__name__)
 app.secret_key = '1532_ab@'
 
-USER = "admin"
-PWD = "admin123"
 
-@app.route('/')
+@app.route('/sign-in')
 def home():
     if 'usuario' in session:
     	return redirect(url_for('start'))
@@ -96,7 +94,7 @@ def login():
             url=url_for('home'),
             texto_botao='Início')
 
-@app.route('/to_login')
+@app.route('/')
 def login_show():
 	if 'usuario' in session:
 		return redirect(url_for('start'))

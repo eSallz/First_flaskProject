@@ -1,3 +1,5 @@
+imporf sqlite
+
 def criar_tabela_logs():
     conn = sqlite3.connect('usuarios.db')
     cursor = conn.cursor()

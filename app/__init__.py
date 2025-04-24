@@ -8,7 +8,7 @@ def create_app():
 	init_db()
 	
 	from app.routes import init_app
-	from app.handlers.error_handles import init_error_handles as ieh
+	from app.handlers.error_handlers import init_error_handlers as ieh
 	init_app(app)
 	ieh(app)
 	return app

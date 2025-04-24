@@ -7,7 +7,9 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT UNIQUE NOT NULL,
         senha TEXT NOT NULL,
-        nivel TEXT NOT NULL
+        nivel TEXT NOT NULL,
+        pergunta TEXT NOT NULL,
+        resposta TEXT NOT NULL
     )
     """)
 

@@ -11,12 +11,13 @@ def execute_query(query, params=()):
 	conn = get_connection()
 	cursor = conn.cursor()
 	cursor.execute(query, params)
-	cursor.commit
+	conn.commit()
 	conn.close()
 	
 def fetch_one(query, params=()):
 	conn = get_connection()
 	cursor = conn.cursor()
+	cursor.execute(query, params)
 	result = cursor.fetchone()
 	conn.close()
 	return result

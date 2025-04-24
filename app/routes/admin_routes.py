@@ -7,7 +7,9 @@ admin_bp = Blueprint('admin', __name__)
 @admin_bp.route('/painel_admin')
 @require_level(3)  # Apenas nível 3 ou 4
 def painel_admin():
-    query_users = "SELECT id, nome, nivel FROM usuarios")
+    if not 'usuario' in session:
+        return redirect(url_for('auth.home'))
+    query_users = "SELECT id, nome, nivel FROM usuarios"
     usuarios = fetch_all(query_users, ())
     
     query_logs = "SELECT usuario, data_hora FROM logs ORDER BY id DESC LIMIT 20"
@@ -23,12 +25,12 @@ def painel_admin():
 def excluir_usuario():
     id = request.form['id']
     try:
-    	int(id)
+        int(id)
+        query = "DELETE FROM usuarios WHERE id=?"
+        execute_query(query, (id,))
+        return redirect(url_for('admin.painel_admin'))
     except ValueError:
     	return "ID Invalido", 400
-    query = "DELETE FROM usuarios WHERE id=?"
-    execute_query(query, (id,))
-    return redirect(url_for('admin.painel_admin'))
 
 @admin_bp.route('/alterar_nivel', methods=['POST'])
 @require_level(3)
@@ -38,3 +40,19 @@ def alterar_nivel():
     query = "UPDATE usuarios SET nivel=? WHERE id=?"
     execute_query(query, (novo_nivel, id))
     return redirect(url_for('admin.painel_admin'))
+
+@admin_bp.route('/show_db')
+@require_level(4)
+def show_db():
+
+    # Pega dados de todas as tabelas
+    query = "SELECT name FROM sqlite_master WHERE type='table'"
+    tabelas = fetch_all(query, ())
+
+    dados = {}
+    for tabela in tabelas:
+        tabela = tabela[0]
+        sel_query = f"SELECT * FROM {tabela}"
+        dados[tabela] = fetch_all(sel_query, ())
+    return render_template('ver_db.html', dados=dados)
+

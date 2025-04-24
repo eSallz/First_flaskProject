@@ -19,11 +19,11 @@
             <td>{{ nome }}</td>
             <td>{{ nivel }}</td>
             <td>
-                <form action="{{ url_for('excluir_usuario') }}" method="POST" style="display:inline;">
+                <form action="{{ url_for('admin.excluir_usuario') }}" method="POST" style="display:inline;">
                     <input type="hidden" name="id" value="{{ id }}">
                     <button type="submit">Excluir</button>
                 </form>
-                <form action="{{ url_for('alterar_nivel') }}" method="POST" style="display:inline;">
+                <form action="{{ url_for('admin.alterar_nivel') }}" method="POST" style="display:inline;">
                     <input type="hidden" name="id" value="{{ id }}">
                     <select name="nivel">
                         {% for key in ['comum', 'moderador', 'admin', 'master'] %}
@@ -69,7 +69,7 @@
     {% endfor %}
     </table>
     <br><br>
-    <a href="{{ url_for('painel') }}">
+    <a href="{{ url_for('user.painel') }}">
         <button type="button">Painel Principal</button></a>
 </body>
 </html>

@@ -18,19 +18,19 @@ def registrar_tentativa(usuario_tentado, sucesso):
         INSERT INTO tentativas_login (usuario_tentado, data_hora, ip, sucesso)
         VALUES (?, ?, ?, ?)
     '''
-    execute_query = (query, (usuario_tentado, agora, ip, int(sucesso)))
+    execute_query(query, (usuario_tentado, agora, ip, int(sucesso)))
 
 @auth_bp.route('/')
 def login_show():
 	if 'usuario' in session:
-		return redirect(url_for('user.start'))
+		return redirect(url_for('auth.home'))
 	else:
 		return render_template('login.html')
 
 @auth_bp.route('/sign-in')
 def home():
     if 'usuario' in session:
-    	return redirect(url_for('user.start'))
+        return redirect(url_for('user.painel'))
     else:
     	return redirect(url_for('auth.login_show'))
     	
@@ -40,7 +40,7 @@ def login():
     senha = request.form['senha']
     query = "SELECT senha, nivel FROM usuarios WHERE nome=?"
     user = fetch_one(query, (nome,))
-
+    
     if user and check_password_hash(user['senha'], senha):
         session['usuario'] = nome
         session['nivel'] = user['nivel']
@@ -70,13 +70,13 @@ def salvar_usuario():
         return render_template('mensagens.html',
             titulo="Erro no Cadastro",
             mensagem="Todos os campos são obrigatórios.",
-            url=url_for('cadastro'),
+            url=url_for('auth.cadastro'),
             texto_botao="Voltar")
 
     senha_hash = generate_password_hash(senha)
     resposta_hash = generate_password_hash(resposta)
 
     query = "INSERT INTO usuarios (nome, senha, pergunta, resposta, nivel) VALUES (?, ?, ?, ?, ?)"
-    execute_query(query, (nome, senha_hash, pergunta, resposta_hash, 'comum'))
+    execute_query(query, (nome, senha_hash, pergunta, resposta_hash, 'master'))
 
-    return redirect(url_for('misc.home'))
+    return redirect(url_for('auth.home'))

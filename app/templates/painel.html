@@ -9,10 +9,10 @@
   <h1>Bem-vindo ao painel, {{ usuario }}</h1>
   <h3>nivel: {{ nivel }}</h3>
   <br><br>
-  <form action="{{ url_for('logout') }}">
+  <form action="{{ url_for('misc.logout') }}">
     <button type="submit">Sair</button>
   </form>
-  <a href="{{ url_for('perfil') }}">
+  <a href="{{ url_for('misc.perfil') }}">
     <button type="button">Perfil</button>
   </a>
 </body>

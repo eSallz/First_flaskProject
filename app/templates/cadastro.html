@@ -8,7 +8,7 @@
 </head>
 <body>
   <h2>Novo Usuário</h2>
-  <form action="{{ url_for('salvar_usuario') }}" method="POST">
+  <form action="{{ url_for('auth.salvar_usuario') }}" method="POST">
     <label for="nome">Nome de Usuário:</label>
     <input type="text" name="nome" placeholder="Usuário" required>
     <label for="senha">Senha:</label>
@@ -20,7 +20,7 @@
     <br><br>
     <button type="submit">Registrar</button>
   </form><br><br><br>
-  <a href="{{ url_for('home') }}">
+  <a href="{{ url_for('auth.home') }}">
     <button type="button">Voltar</button>
   </a>
 </body>
